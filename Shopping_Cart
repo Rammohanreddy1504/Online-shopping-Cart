@@ -1,0 +1,126 @@
+import java.util.*;
+
+class Product {
+    private String name;
+    private double price;
+
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String toString() {
+        return name + " " + price;
+    }
+}
+
+class Shopping_Cart {
+    ArrayList<Product> cart;
+
+    Shopping_Cart() {
+        cart = new ArrayList<>();
+    }
+
+    public void addProduct(Product p) {
+        for (Product ep : cart) {
+            if (ep.getName().equals(p.getName())) {
+                ep.setPrice(ep.getPrice() + p.getPrice());
+                System.out.println("Price Updated");
+                return;
+            }
+        }
+        cart.add(p);
+        System.out.println("Product added to the cart");
+    }
+
+    public void removeproduct(String name) {
+        for (Product p : cart) {
+            if (p.getName().equals(name)) {
+                cart.remove(p);
+                System.out.println("Product removed from the cart");
+                return;
+            }
+        }
+        System.out.println("Product name not found!!!");
+    }
+
+    public void displayCart() {
+        for (Product p : cart) {
+            System.out.println(p);
+        }
+    }
+
+    public void calculate() {
+        double total = 0.0;
+        for (Product p : cart) {
+            total = total + p.getPrice();
+        }
+        double discount = 0.0;
+        if (total >= 100000) {
+            discount = 0.1 * total;
+        }
+        System.out.println("Total Cost:" + total);
+        System.out.println("Discount given: " + discount);
+        System.out.println("Final Cost: " + (total - discount));
+    }
+
+    public static int menu() {
+        System.out.println("1.Add\n 2.Remove\n 3.Display\n 4.Calculate\n 5.Exit");
+        System.out.println("Enter your choice: ");
+        Scanner sc = new Scanner(System.in);
+        int ch = sc.nextInt();
+        return ch;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Shopping_Cart obj = new Shopping_Cart();
+        while (true) {
+            try {
+                int ch = menu();
+                switch (ch) {
+                    case 1:
+                        System.out.println("Enter name and price:");
+                        String n = sc.next();
+                        double pr = sc.nextDouble();
+                        Product p = new Product(n, pr);
+                        obj.addProduct(p);
+                        break;
+                    case 2:
+                        System.out.println("Enter product name: ");
+                        String name = sc.next();
+                        obj.removeproduct(name);
+                        break;
+                    case 3:
+                        obj.displayCart();
+                        break;
+                    case 4:
+                        obj.calculate();
+                        break;
+                    case 5:
+                        System.exit(0);
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Wrong Input");
+            }
+        }
+    }
+}
